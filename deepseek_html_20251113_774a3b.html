@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockSensei - AI Trading Mentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sensei-green: #10B981;
+            --sensei-navy: #1E293B;
+            --sensei-gold: #F59E0B;
+            --sensei-purple: #8B5CF6;
+            --sensei-red: #EF4444;
+            --sensei-gray: #6B7280;
+            --sensei-light: #F8FAFC;
+            --sensei-dark: #0F172A;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--sensei-navy);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--sensei-navy);
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--sensei-green), var(--sensei-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--sensei-navy);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--sensei-green);
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, var(--sensei-green), var(--sensei-purple));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 140px 0 80px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        
+        .button-primary {
+            background: linear-gradient(135deg, var(--sensei-gold), #F59E0B);
+            color: var(--sensei-navy);
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        .button-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(245, 158, 11, 0.4);
+        }
+        
+        .button-secondary {
+            background: transparent;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .button-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--sensei-navy);
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--sensei-gray);
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .feature-card {
+            background: var(--sensei-light);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--sensei-green);
+        }
+        
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--sensei-green), var(--sensei-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--sensei-navy);
+            font-weight: 700;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background: var(--sensei-light);
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: white;
+            padding: 3rem 2.5rem;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .pricing-card.popular {
+            border-color: var(--sensei-gold);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--sensei-gold);
+            color: var(--sensei-navy);
+            padding: 0.5rem 3rem;
+            font-weight: 700;
+            font-size: 0.8rem;
+            transform: rotate(45deg);
+        }
+        
+        .pricing-tier {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--sensei-navy);
+        }
+        
+        .pricing-price {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--sensei-green), var(--sensei-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .pricing-period {
+            font-size: 1rem;
+            color: var(--sensei-gray);
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 2.5rem 0;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.95rem;
+        }
+        
+        .pricing-features li::before {
+            content: "✓";
+            color: var(--sensei-green);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .price-button {
+            display: block;
+            width: 100%;
+            padding: 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--sensei-green);
+            cursor: pointer;
+        }
+        
+        .price-button.primary {
+            background: linear-gradient(135deg, var(--sensei-green), var(--sensei-purple));
+            color: white;
+            border: none;
+        }
+        
+        .price-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .price-button.secondary {
+            background: transparent;
+            color: var(--sensei-green);
+        }
+        
+        .price-button.secondary:hover {
+            background: var(--sensei-green);
+            color: white;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--sensei-dark);
+            color: white;
+            padding: 80px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--sensei-gold);
+            font-weight: 700;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--sensei-green);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--sensei-green);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 10000;
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .pricing-card.popular {
+                transform: none;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .button-primary, .button-secondary {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🥋</span>
+                StockSensei
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#testimonials">Success Stories</a></li>
+                </ul>
+            </nav>
+            <button onclick="showLoginModal()" class="cta-button">Start Learning</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Master the Stock Market with Your AI Sensei</h1>
+            <p class="hero-subtitle">
+                Learn stock market investing with AI guidance. No experience needed - just curiosity and the willingness to learn.
+            </p>
+            <div class="hero-buttons">
+                <button onclick="showLoginModal()" class="button-primary">
+                    <i class="fas fa-rocket"></i> Start Free Trial
+                </button>
+                <button onclick="scrollToSection('features')" class="button-secondary">
+                    <i class="fas fa-play-circle"></i> Watch Demo
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Students Trained</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">94%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">$2.1M+</div>
+                    <div class="stat-label">Virtual Profits</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Why StockSensei Works</h2>
+            <p class="section-subtitle">AI-powered learning meets proven educational methodology</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Real-time stock analysis and personalized recommendations from your AI trading mentor</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🥋</div>
+                    <h3>Martial Arts Methodology</h3>
+                    <p>Structured belt system from White Belt to Black Belt mastery with clear progression</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Risk-Free Practice</h3>
+                    <p>$10,000 virtual portfolio to practice strategies without financial risk</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Choose Your Learning Path</h2>
+            <p class="section-subtitle">Start for free, upgrade as you grow. Cancel anytime.</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-tier">White Belt</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-period">forever free</div>
+                    <ul class="pricing-features">
+                        <li>5 stock analyses per day</li>
+                        <li>$10,000 practice portfolio</li>
+                        <li>Basic lessons</li>
+                        <li>Community access</li>
+                    </ul>
+                    <button onclick="signupUser('free')" class="price-button secondary">Start Learning</button>
+                </div>
+
+                <div class="pricing-card popular">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="pricing-tier">Warrior</div>
+                    <div class="pricing-price">$29</div>
+                    <div class="pricing-period">per month</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited stock analysis</li>
+                        <li>Real-time data</li>
+                        <li>Advanced indicators</li>
+                        <li>Portfolio tracking</li>
+                        <li>Premium lessons</li>
+                    </ul>
+                    <button onclick="signupUser('warrior')" class="price-button primary">Start 7-Day Trial</button>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-tier">Master</div>
+                    <div class="pricing-price">$79</div>
+                    <div class="pricing-period">per month</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Warrior</li>
+                        <li>Live market data</li>
+                        <li>Options analysis</li>
+                        <li>1-on-1 coaching</li>
+                        <li>Advanced tools</li>
+                    </ul>
+                    <button onclick="signupUser('master')" class="price-button secondary">Go Master</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>StockSensei</h3>
+                    <p>Your AI-powered trading mentor. Learn, practice, and master stock market investing.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="legal.html">Terms of Service</a></li>
+                        <li><a href="legal.html#privacy">Privacy Policy</a></li>
+                        <li><a href="legal.html#refund-policy">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 StockSensei. All rights reserved. | Educational software only. Not financial advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 15px; width: 90%; max-width: 400px;">
+            <div id="authModalContent">
+                <!-- Content loaded by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- StockSensei App -->
+    <div id="stockSenseiApp" style="display: none;">
+        <!-- Trading platform loads here -->
+    </div>
+
+    <script>
+        // Simple notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Modal functions
+        function showLoginModal() {
+            const modalContent = `
+                <h3 style="text-align: center; margin-bottom: 1.5rem;">Welcome to StockSensei</h3>
+                <input type="email" id="loginEmail" placeholder="Email" style="width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px;">
+                <input type="password" id="loginPassword" placeholder="Password" style="width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px;">
+                <button onclick="loginUser()" style="width: 100%; padding: 12px; background: var(--sensei-green); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Login</button>
+                <p style="text-align: center; margin-top: 1rem;">
+                    <a href="#" onclick="showSignupModal()" style="color: var(--sensei-green);">Create Account</a>
+                </p>
+                <button onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+            `;
+            
+            document.getElementById('authModalContent').innerHTML = modalContent;
+            document.getElementById('authModal').style.display = 'block';
+        }
+
+        function showSignupModal() {
+            const modalContent = `
+                <h3 style="text-align: center; margin-bottom: 1.5rem;">Join StockSensei</h3>
+                <input type="text" id="signupName" placeholder="Full Name" style="width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px;">
+                <input type="email" id="signupEmail" placeholder="Email" style="width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px;">
+                <input type="password" id="signupPassword" placeholder="Password" style="width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px;">
+                <button onclick="signupUser('free')" style="width: 100%; padding: 12px; background: var(--sensei-green); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Create Free Account</button>
+                <p style="text-align: center; margin-top: 1rem;">
+                    <a href="#" onclick="showLoginModal()" style="color: var(--sensei-green);">Already have an account?</a>
+                </p>
+                <button onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+            `;
+            
+            document.getElementById('authModalContent').innerHTML = modalContent;
+            document.getElementById('authModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        // User management
+        function loginUser() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (email && password) {
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userLoggedIn', 'true');
+                showNotification('Welcome back!', 'success');
+                closeModal();
+                launchStockSensei();
+            } else {
+                showNotification('Please enter email and password', 'error');
+            }
+        }
+
+        function signupUser(tier) {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if (name && email && password) {
+                const userData = {
+                    name: name,
+                    email: email,
+                    tier: tier,
+                    joinDate: new Date().toISOString()
+                };
+                
+                localStorage.setItem('userData', JSON.stringify(userData));
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userLoggedIn', 'true');
+                
+                showNotification(`Welcome to StockSensei, ${name}!`, 'success');
+                closeModal();
+                launchStockSensei();
+            } else {
+                showNotification('Please fill all fields', 'error');
+            }
+        }
+
+        // Launch StockSensei platform
+        function launchStockSensei() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            
+            // Hide marketing content
+            document.querySelector('.hero').style.display = 'none';
+            document.querySelector('.features').style.display = 'none';
+            document.querySelector('.pricing').style.display = 'none';
+            document.querySelector('footer').style.display = 'none';
+            
+            // Show trading platform
+            document.getElementById('stockSenseiApp').innerHTML = `
+                <header style="background: var(--sensei-navy); color: white; padding: 1rem 0;">
+                    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="logo" style="color: white;">
+                            <span>🥋</span> StockSensei
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span>Welcome, ${userData.name || 'Student'}!</span>
+                            <button onclick="location.reload()" style="background: var(--sensei-gold); color: var(--sensei-navy); border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;">
+                                Back to Website
+                            </button>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="container" style="padding: 2rem 0;">
+                    <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <h2>Stock Analysis Dashboard</h2>
+                        
+                        <div style="margin: 1.5rem 0;">
+                            <input type="text" id="stockSearch" placeholder="Enter stock symbol (e.g., AAPL, TSLA)" 
+                                   style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1.1rem;">
+                            <button onclick="analyzeStock()" style="background: var(--sensei-green); color: white; border: none; padding: 12px 24px; border-radius: 8px; margin-top: 10px; cursor: pointer;">
+                                Analyze Stock
+                            </button>
+                        </div>
+                        
+                        <div id="analysisResults" style="display: none;">
+                            <h3>AI Analysis Results</h3>
+                            <div id="stockData"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('stockSenseiApp').style.display = 'block';
+        }
+
+        // Stock analysis
+        function analyzeStock() {
+            const symbol = document.getElementById('stockSearch').value.toUpperCase();
+            if (!symbol) {
+                showNotification('Please enter a stock symbol', 'error');
+                return;
+            }
+            
+            document.getElementById('analysisResults').style.display = 'block';
+            document.getElementById('stockData').innerHTML = '<p>🔍 Analyzing ' + symbol + '...</p>';
+            
+            setTimeout(() => {
+                const mockData = `
+                    <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin: 1rem 0;">
+                        <h4>${symbol} - $${(Math.random() * 500 + 10).toFixed(2)}</h4>
+                        <p style="color: var(--sensei-green); font-weight: bold;">↗ +${(Math.random() * 5).toFixed(2)} (${(Math.random() * 3).toFixed(2)}%)</p>
+                        
+                        <div style="margin: 1rem 0;">
+                            <h5>🤖 AI Sensei Analysis:</h5>
+                            <p>"${symbol} shows positive momentum. Good for practice trading!"</p>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('stockData').innerHTML = mockData;
+            }, 1500);
+        }
+
+        // Utility functions
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('userLoggedIn');
+            if (isLoggedIn) {
+                // User is logged in, could automatically launch platform
+            }
+        });
+    </script>
+</body>
+</html>
