@@ -1,0 +1,34 @@
+/* StockSensei Styles */
+:root {
+    --sensei-green: #10B981;
+    --sensei-navy: #1E293B;
+    --sensei-gold: #F59E0B;
+    --sensei-purple: #8B5CF6;
+    --sensei-red: #EF4444;
+    --sensei-gray: #6B7280;
+    --sensei-light: #F8FAFC;
+    --sensei-dark: #0F172A;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--sensei-navy);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Add all the CSS styles from the previous index.html here */
+/* [Copy the entire CSS section from the previous index.html] */
